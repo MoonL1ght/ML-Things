@@ -1,4 +1,5 @@
 import tensorflow as tf
+import numpy as np
 
 def generator(Z, layers, activation, reuse=False):
   with tf.variable_scope("CGAN/Generator", reuse=reuse):
@@ -9,20 +10,19 @@ def generator(Z, layers, activation, reuse=False):
       else:
         outputs.append(tf.layers.dense(outputs[-1], layer, activation=activation))
     out = tf.layers.dense(outputs[-1], Z.get_shape()[-1])
-    logit = tf.nn.sigmoid(out)
-  return logit, out
+  return out
 
 def discriminator(X, layers, activation, scope, reuse=False):
   with tf.variable_scope(scope, reuse=reuse):
     outputs = []
     for (i, layer) in enumerate(layers):
       if i == 0:
-        outputs.append(tf.layers.dense(X, layer, activation=tf.nn.sigmoid))
+        outputs.append(tf.layers.dense(X, layer, activation=activation))
       else:
-        outputs.append(tf.layers.dense(outputs[-1], layer, activation=tf.nn.sigmoid))
+        outputs.append(tf.layers.dense(outputs[-1], layer, activation=activation))
     outputs.append(tf.layers.dense(outputs[-1], X.get_shape()[-1]))
-    logit = tf.layers.dense(outputs[-1], 1)
-    prob = tf.nn.sigmoid(logit)
+    logit = tf.layers.dense(outputs[-1], 2)
+    prob = tf.nn.softmax(logit)
   return prob, logit, outputs[-1]
 
 class CGAN:
@@ -50,32 +50,39 @@ class CGAN:
     self.Z = tf.placeholder(tf.float32, [None, self.dimension])
     self.T = tf.placeholder(tf.float32, [None, self.dimension])
 
-    self.g_logit, self.g_samples = generator(self.Z, self.g_layers, self.g_activation)
+    self.g_samples = generator(self.Z, self.g_layers, self.g_activation)
 
     self.real_prob, self.real_logits, self.real_repr = discriminator(self.X,
       self.d_layers, self.d_activation, "CGAN/Discriminator")
-    self.gen_prob, self.gen_logits, self.gen_repr = discriminator(self.g_logit,
+    self.gen_prob, self.gen_logits, self.gen_repr = discriminator(self.g_samples,
       self.d_layers, self.d_activation, "CGAN/Discriminator", reuse=True)
 
     self.real_prob_t, self.real_logits_t, self.real_repr_t = discriminator(self.T,
       self.t_layers, self.t_activation, "CGAN/Discriminator_target")
-    self.gen_prob_t, self.gen_logits_t, self.gen_repr_t = discriminator(self.g_logit,
+    self.gen_prob_t, self.gen_logits_t, self.gen_repr_t = discriminator(self.g_samples,
       self.t_layers, self.t_activation, "CGAN/Discriminator_target", reuse=True)
 
+    y_real_mb = one_hot(np.zeros(100), 2)
+    y_fake_mb = one_hot(np.ones(100), 2)
+    y_real= tf.placeholder(tf.int32, shape=[None, 2])
+    y_gen = tf.placeholder(tf.int32, shape=[None, 2])
     d_loss_real = tf.reduce_mean(
-      tf.nn.sigmoid_cross_entropy_with_logits(logits=self.real_logits,
-        labels=tf.zeros_like(self.real_logits)))
+      tf.nn.softmax_cross_entropy_with_logits(logits=self.real_logits,
+        labels=y_real_mb))
     d_loss_gen = tf.reduce_mean(
-      tf.nn.sigmoid_cross_entropy_with_logits(logits=self.gen_logits,
-        labels=tf.ones_like(self.gen_logits)))
+      tf.nn.softmax_cross_entropy_with_logits(logits=self.gen_logits,
+        labels=y_fake_mb))
     ent_real_loss = -tf.reduce_mean(tf.reduce_sum(
       tf.multiply(self.real_prob, tf.log(self.real_prob)), 1))
     self.d_loss = d_loss_real + d_loss_gen + 1.85 * ent_real_loss
 
     pt_loss = pull_away_loss(self.gen_repr_t)
+    y_pre = np.zeros(3000)
+    y_pre = one_hot(y_pre, 2)
+    y_tar= tf.placeholder(tf.int32, shape=[None, 2])
     self.t_loss = tf.reduce_mean(
-      tf.nn.sigmoid_cross_entropy_with_logits(logits=self.real_logits_t,
-        labels=tf.zeros_like(self.real_logits_t)))
+      tf.nn.softmax_cross_entropy_with_logits(logits=self.real_logits_t,
+        labels=y_pre))
     tar_thrld = tf.divide(tf.reduce_max(self.gen_prob_t[:,-1]) +
       tf.reduce_min(self.gen_prob_t[:,-1]), 2)
     indicator = tf.sign(tf.subtract(self.gen_prob_t[:,-1], tar_thrld))
@@ -118,3 +125,10 @@ def pull_away_loss(g):
     tf.multiply(tf.cast(tf.shape(X_X)[0], tf.float32),
       tf.cast(tf.shape(X_X)[0]-1, tf.float32)))
   return pt_loss
+
+def one_hot(x, depth):
+  x_one_hot = np.zeros((len(x), depth), dtype=np.int32)
+  x = x.astype(int)
+  for i in range(x_one_hot.shape[0]):
+    x_one_hot[i, x[i]] = 1
+  return x_one_hot
