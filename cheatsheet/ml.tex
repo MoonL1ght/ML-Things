@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass{book}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{indentfirst}
@@ -14,8 +14,38 @@
 
 \begin{document}
 \part{Math}
-\section{Linear algebra}
-\subsection{Identity and Inverse Matrices}
+\chapter{Probability}
+\section{Bayes rule}
+\textbf{Joint probability}\index{Joint probability}, $P(A, B)=P(A\cap B)$ - это вероятность того, что произошло событие A и В одновременно. $P(A, B) = P(A|B)P(B)$, если события A и B независимы то $P(A|B)=P(A)$ следовательно получаем такую формулу: $P(A, B)=P(A)P(B)$. $P(A, B)=P(B,A)$, отсюда можно получить \textbf{Bayes Theorem}\index{Bayes Theorem}: $$P(A|B)P(B)=P(B|A)P(A)$$ $$P(A|B)=\frac{P(B|A)P(A)}{P(B)}$$
+\section{Prior probability and Posterior probability}
+Исходя из теоремы байеса: $$posterior\propto prior \times likelyhood$$
+\textbf{Posterior probability}\index{Posterior probability} вероятность события после какого то измерения. $P(A|B)$, если рассматривать в терминах машинного обучения $P(H|D)$, где H - гипотеза или модель, D - данные.\\
+\textbf{Prior probability}\index{Prior probability} вероятность распределения гипотезы.\\\\
+\emph{Пример}\\\\
+$ P(H|E) = \frac{P(E|H)P(H)}{P(E)} $, H - имеется заболевание (гипотеза, модель), E - тест на заболевание положителен (результаты/данные/событие).\\ $P(H)$ - \textbf{Prior probability}\index{Prior probability} того, что гипотеза правдоподобна (в данном примере какова вероятность того что есть заболевание до того как был проведен тест, то есть насколько распространено заболевание).\\ $P(E|H)$ - насколько вероятно что тест будет положителен если действительно имеется заболевание.\\$P(E)$ - просто вероятность того, что тест положительный. Это комбинация  $P(H)P(E|H)$ и $P(!H)P(E|!H)$ $$ P(E)= P(H)P(E|H) + P(!H)P(E|!H)$$
+\textbf{Prior probability} (что гипотеза верна) наиболее сложно определить на практике.\\
+Теперь посчитаем пример:
+Пришел положительный тест на заболевание, заболевание распространено у 10\% населения. Точность теста равна 95\%. Какова вероятность того что заболевание действительно есть если пришли положительные результаты теста.
+$$P(H|E)=\frac{P(E|H)P(H)}{P(H)P(E|H) + P(!H)P(E|!H)}$$$$P(H|E)=\frac{0.95*0.1}{0.95*0.1+0.9*0.05}=0.67$$
+В спаме:$$P(spam|word)=\frac{p(word|spam)P(spam)}{P(word)}$$
+
+\textbf{Conjugate prior} \index{Conjugate prior}
+In Bayesian probability theory, if the posterior distributions p(θ | x) are in the same probability distribution family as the prior probability distribution p(θ), the prior and posterior are then called conjugate distributions, and the prior is called a conjugate prior for the likelihood function.
+
+\section{Beta Distribution}
+\textbf{Beta Distribution}\index{Beta Distribution} is a family of continuous probability distributions defined on the interval [0, 1] parametrized by two positive shape parameters, denoted by α and β. In Bayesian inference, the beta distribution is the conjugate prior probability distribution for the Bernoulli, binomial, negative binomial and geometric distributions.$$P(x; \alpha, \beta)=\frac{x^{\alpha - 1}(1-x)^{\beta -1}}{B(\alpha,\beta)}$$The \textbf{beta function}\index{beta function}, 
+B, is a normalization constant to ensure that the total probability is 1. The beta function, also called the \textbf{Euler integral}\index{Euler integral} of the first kind. $$B(x, y)=\int_{0}^{1}t^{x-1}(1-t)^{y-1}$$
+\section{Cauchy distribution}
+\textbf{Cauchy distribution} \index{Cauchy distribution} или (Распределение Коши). Случайная величина, имеющая распределение Коши, является стандартным примером величины, не имеющей математического ожидания и дисперсии.
+$$F_X(x)=\frac{1}{\pi}\arctan \left(\frac{x-x_0}{\gamma}\right) + \frac{1}{2}$$
+\section{Confidence intervals}
+
+There is a 95\% chance that p is within $2\sigma_{\hat p}$ of $\hat p$
+
+\section{Hypothesis testing}
+
+\chapter{Linear algebra}
+\section{Identity and Inverse Matrices}
 We denote the identity matrix that preserves n-dimensional vectors as $I_n$:$$\mathbf{I}_n\mathbf{x}=\mathbf{x}$$The structure of the identity matrix is simple: all of the entries along the main
 diagonal are 1, while all of the other entries are zero.
 Единичная матрица квадратная.
@@ -32,17 +62,191 @@ diagonal are 1, while all of the other entries are zero.
 Таким образом мы можем определить обратную матрицу как: $\mathbf{A}^{-1}$, для нее справедливо:$$\mathbf{A}^{-1}\mathbf{A} = \mathbf{I}_n$$
 \label{Identity_and_Inverse_Matrices}
 \part{Machine learning}
-\section{Loss Functions}
-\subsection{MSE, OLS}
+\chapter{ML algorithms}
+\section{SVM}
+\textbf{SVM}\index{SVM} - Support vector machine
+\chapter{Loss Functions}
+\section{MSE, OLS}
 Все это одно и то же по сути, \textbf{RSS}\index{RSS} - residual sum of squares, \textbf{OLS}\index{OLS} - ordinary least squares, \textbf{LS}\index{LS} - least  squares, \textbf{MSE}\index{MSE} - mean squared error, \textbf{SE}\index{SE} - squared error. В разных источниках можно встретить разные названия. Суть у этого всего одна: квадратичное отклонение. Можно запутаться конечно, но к этому быстро привыкаешь.
 
 Стоит отметить, что MSE это средне-квадратичное отклонение, некое среднее значение ошибки для всего тренировочного набора данных. На практике обычно MSE и используется. Формула особо ничем не отличается:$$MSE(\beta)=\frac{1}{N}\sum_{i=1}^n(y_i-\hat{y}_i)^2$$$N$ - размер датасета, $\hat{y}_i$ - предсказание модели для $y_i$.
 \label{loss:LS}
-\section{Supervised Learning}
-\subsection{Linear regression}
+\chapter{Linear regression}
 Обычная линейная модель:$ \hat y(x) = f_\theta = \sum_{i=1}^{n}x_i\theta_i + \theta_0$. В векторном (матричном если тренируем сразу на батче) виде: $\hat Y(X) = \mathbf{X}^T\theta$.\\При этом смещение (bias) $\theta_0$ поместим в общий вектор, $x_0=1$.Используем функцию ошибки \textbf{RSS}\index{RSS} (residaul sum of squares). Почти тоже самое, что и \textbf{MSE}\index{MSE} (Смотреть в разделе \autoref{loss:LS}).$$L=RSS=\sum_i^N{(y_i-\hat y_i)^2}$$Или в векторном виде (далее в этом разделе все будет в вектрном виде):$$L(\mathbf{X})=(\mathbf{Y}-\hat{\mathbf{Y}})^2=(\mathbf{Y}-\mathbf{X}^T\theta)^2$$Наша цель найти параметры $\theta$, для этого возьмем частную производную от функции ошибки L по $\theta$ и приравняем ее к нулю.$$\frac{\delta L}{\delta \theta}=\frac{1}{2}(\mathbf{Y} - \mathbf{X}^T\theta)\mathbf{X}=0$$Отсуда можно найти $\theta$:$$(\mathbf{Y} - \mathbf{X}^T\theta)\mathbf{X}=\mathbf{Y}^T\mathbf{X}-\mathbf{X}^T\mathbf{X}\theta = 0$$ $$\theta=(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{Y}^T\mathbf{X}$$Это прямой способ нахождения параметров, минусы заключаются в том, что для этого надо находить обратную матрицу $(\mathbf{X}^T\mathbf{X})^{-1}$, а она не всегда существует (плюс она должна быть квадратной, смотреть \autoref{Identity_and_Inverse_Matrices}). Такой способ называется решение на прямую или через \textbf{The Normal Equation}\index{The Normal Equation} Так же: размерность обратной матрицы $n\times n$ The computational complexity of inverting such a matrix is typically about $O(n^2.4)$ to $O(n^3)$ (depending on the implementation). On the positive side, this equation is linear with regards to the number of instances in the training set (it is
 O(m)), so it handles large training sets efficiently, provided they can fit in memory.
 Использование итерационного метода (\textbf{Gradient Descent}\index{Gradient Descent} или \textbf{Batch Gradient Descent}): Далее будет говорится о Batch Gradient Descent. Поэтому будем использовать \textbf{MSE}\index{MSE} в качетсве ошибки:$$L=MSE=\frac{1}{m}\sum_i^N{(y_i-\hat y_i)^2}$$где $m$-размер батча.$$\frac{\delta MSE}{\delta \theta_j}=\frac{1}{m}\sum_j^m(\mathbf{y}_j - \mathbf{x}_j^T\theta)\mathbf{x}_j$$В данном случае к нулю приравнивать не надо, наща цель найти градиент функции стоимости (или функции ошибки, в данном случае MSE).$$\nabla \theta = \frac{1}{m}(\mathbf{Y} - \mathbf{X}^T\theta)\mathbf{X}$$Отсюда получаем значения параметров на следующем шаге: $$\theta_{(next step)}=\theta-\eta\nabla\theta$$
+\section{Logistic regression}
+\textbf{Logistic regression}\index{Logistic regression} предсказывает вероятность [0, 1]
+\chapter{Decision Tree}
+\chapter{Bayesian Learning}
+Suppose that you are allowed to flip the coin 10 times in order to
+determine the fairness of the coin. Your observations from the
+experiment will fall under one of the following cases:
+\begin{itemize}
+\item Case 1: observing 5 heads and 5 tails.
+\item Case 2: observing h heads and 10-h tails, where $h\neq 10-h$.
+\end{itemize}
+If case 1 is observed, you are now more certain that the coin is a fair
+coin, and you will decide that the probability of observing heads is
+with more confidence. If case 2 is observed you can either:
+\begin{enumerate}
+\item Neglect your prior beliefs since now you have new data, decide the
+probability of observing heads is h/10 by solely depending on
+recent observations.
+\item Adjust your belief accordingly to the value of that you have just
+observed, and decide the probability of observing heads using your
+recent observations.
+\end{enumerate}
+The first method suggests that we use the frequentist method, where
+we omit our beliefs when making decisions. However, the second
+method seems to be more convenient because 10 coins are insu"cient
+to determine the fairness of a coin. Therefore, we can make better
+decisions by combining our recent observations and beliefs that we
+have gained through our past experiences. It is this thinking model
+which uses our most recent observations together with our beliefs or
+inclination for critical thinking that is known as Bayesian thinking. \\
+Moreover, assume that your friend allows you to conduct another
+coin flips. Then we can use these new observations to further update
+our beliefs. As we gain more data, we can incrementally update our
+beliefs increasing the certainty of our conclusions. This is known as
+incremental learning, where you update your knowledge
+incrementally with new evidence.\\Bayesian learning comes into play on such occasions, where we are
+unable to use frequentist statistics due to the drawbacks that we have
+discussed above. We can use Bayesian learning to address all these
+drawbacks and even with additional capabilities (such as incremental
+updates of the posterior) when testing a hypothesis to estimate
+unknown parameters of a machine learning models. Bayesian learning
+uses Bayes’ theorem to determine the conditional probability of a
+hypotheses given some evidence or observations.
+\section{Maximum a Posteriori (MAP)}
+We can use \textbf{MAP}\index{MAP} to determine the valid hypothesis from a set of
+hypotheses. According to MAP, the hypothesis that has the maximum
+posterior probability is considered as the valid hypothesis. Therefore,
+we can express the hypothesis $\theta$ that is concluded using MAP as
+follows:$$\theta = argmax_{\theta}P(\theta_i|X)$$
+\section{Bayesian Learning}
+Предпологаем, что: The prior, likelihood, and posterior are continuous random variables that are described using probability density functions. 
+Let us now attempt to determine the probability density functions for
+each random variable in order to describe their probability
+distributions.\\
+возьмем: Binomial Likelihood\\
+Beta Prior Distribution\\
+Reasons for choosing the beta distribution as the prior as follows:\begin{itemize}
+\item If the posterior distribution has the same family as the prior
+distribution then those distributions are called as conjugate
+distributions, and the prior is called the conjugate prior. Beta prior acts as a conjugate prior to Binomial likelihood. If we use a Beta
+distribution to represent our belief, then the resulting posterior
+distribution will also be a beta distribution. When we observe new
+data, then this posterior can be used as the new prior to compute
+the new posterior. Therefore, we can incrementally update the
+prior whenever new data is available avoiding many complex
+computations from Bayes’ theorem — the posterior can be derived
+by altering the shape parameters of the conjugate priors
+accordingly.
+\item Beta distribution has a normalizing constant, thus it is always
+distributed between and . Therefore we are not required to
+compute the denominator of the Bayes’ theorem to normalize the
+posterior probability distribution — Beta distribution can be
+directly used as a probability density function of $\theta$(recall that $\theta$ is also a probability and therefore it takes values between 0 and 1).
+\item When we are unable to decide the prior distribution due
+to lack of past experience, we can use the uninformative prior with
+minimal influence on the posterior. An uninformative prior can be
+generated by setting the shape parameters of Beta distribution $\alpha = \beta=1$
+\end{itemize}
+
+Если бета распределение не информативное, то постериорное распределение более похоже на likelihood.
+
+Bayesian learning is capable of incrementally updating the
+posterior distribution whenever new evidence is made available while
+improving the confidence of the estimated posteriors with each
+update.
+
+\section{Linear Regression with BL}
+
+Для решения задачи регресии можно использовать least squared error or using the maximum likelihood, which is
+categorized as frequentist methods. According to the frequentist method, we can determine a single value
+per each parameter.
+Moreover, the frequentist method gives exact point estimations to
+the unknown model parameters ($W$) and does not show the
+variation of those model parameters.\\
+\textbf{Confidence interval} \index{Confidence interval} guarantees with a certain confidence that the estimated value lies within a certain
+interval, whereas concepts of uncertainty in Bayesian learning
+measures the confidence of the each value from the estimated
+posterior distributions.
+
+Модель:$$y = wx+b$$ $$\mu = y = wx+b$$ $$y \sim \mathcal{N}(wx+b, \sigma^2)$$
+Therefore, we have to
+determine the parameters $w$, $b$, $\sigma^2$, and using Bayesian inference given
+the $X$ and $Y$.
+
+Используя теорему байеса, получаем:
+$$\underbrace{P(w,b,\sigma^2|Y,X)}_{posterior} = \frac{\underbrace{P(Y|w,b,\sigma^2, X)}_{likelihood}\underbrace{P(w,b,\sigma^2)}_{prior}}{\underbrace{P(Y|X)}_{evidence}}$$
+Из данной формулы можно убрать evidence так как он не зависит от параметров модели:
+$$P(w,b,\sigma^2|Y,X)\propto P(Y|wX+b,\sigma^2)P(w,b,\sigma^2)$$
+Учитвая, что переменные независимы формулу можно переписать:
+$$P(w,b,\sigma^2|Y,X)\propto \prod_i^N[P(y_i|wx_i+b,\sigma^2)]P(w)P(b)P(\sigma^2)$$
+
+ Можно определить априорные распределения как нормальные или распределение Коши для дисперсии.
+ 
+The process of learning hidden variables is called \textbf{Bayesian
+inference}\index{Bayesian
+inference}.
+
+Typically, classical machine learning models are less useful in the
+absence of su!cient data to train those models. However, a Bayesian
+model can still be useful with less data owing to its capability to attach
+an uncertainty value with each prediction.
+
+\section{MCMC sampling}
+
+\textbf{MCMC sampling}\index{MCMC sampling} or Markov Chain Monte Carlo sampling один из методов нахождения скрытых параметров для байесовского обучения или \textbf{Bayesian
+inference}\index{Bayesian
+inference}.\\
+
+
+
+\chapter{Bayesian Optimization}
+Bayesian optimization is an approach to optimizing objective functions that take a long time (minutes or hours) to evaluate. BayesOpt is designed for black-box derivative free global optimization.
+
+\chapter{Regularizing neural networks, optimizing models}
+Методы поиска оптимальной модели, подобор гиперпараметров:
+\begin{itemize}
+\item Random: Try random configurations of layers and nodes per layer.
+\item \textbf{Grid Search}\index{Grid Search} Try a systematic search across the number of layers and nodes per layer.
+\item Heuristic: Try a directed search across configurations such as a genetic algorithm or Bayesian optimization.
+\item Exhaustive: Try all combinations of layers and the number of nodes; it might be feasible for small networks and datasets.
+\end{itemize}
+\section{Bayesian Hyperparameter Optimization}
+
+\chapter{A/B testing}
+The humble A/B test (also known as a randomised controlled trial, or RCT, in the other sciences) is a powerful tool for product development.
+
+\textbf{ROI} (return on investment)
+
+Конверсия\\
+
+Конверсия вычисляется как доля от общего числа посетителей, совершивших какое-либо действие. Действием может быть заполнение формы на посадочной странице, совершение покупки в интернет-магазине, регистрация, подписка на новости, клик на ссылку или блок.\\
+
+Экономические метрики\\
+
+Как правило, эти метрики применимы для интернет-магазинов: величина среднего чека, объем выручки, отнесенный на число посетителей интернет-магазина.\\
+
+Поведенческие факторы\\
+
+К поведенческим факторам относят оценку заинтересованности посетителей в ресурсе. Ключевыми метриками являются: глубина просмотра страниц — число просмотренных страниц, отнесенное к числу посетителей на сайте, средняя продолжительность сессии, показатель отказов — доля пользователей, покинувших сайт сразу после первого захода, коэффициент удержания (можно считать, как 1 минус \% новых пользователей).\\
+
+\chapter{Additional Info}
+\textbf{CHAID} - Chi-square automatic interaction detection\\
+\textbf{Contingency table} or Two-way table are used in statistics to summarize the relationship between several categorical variables. \\
+
+
+\part{Programming}
+\chapter{Alghoritms}
+\section{Metropolis–Hastings algorithm}
+\textbf{Metropolis–Hastings algorithm}\index{Metropolis–Hastings algorithm} или Алгоритм Метрополиса — Гастингса
+
+In statistics and statistical physics, the Metropolis–Hastings algorithm is a Markov chain Monte Carlo (\textbf{MCMC} \index{MCMC}) method for obtaining a sequence of random samples from a probability distribution from which direct sampling is difficult.
+
 
 
 \printindex
