@@ -15,6 +15,14 @@
 \begin{document}
 \part{Math}
 \chapter{Probability}
+\section{standart deviation}
+\textbf{standart deviation}\index{standart deviation}
+$$\sigma = \sqrt{Var} = \sqrt{\sigma^2}$$$Var$ - variance (дисперсия)\\
+$1\sigma$ - 68\% данных для нормального распределения, 95\% - для двух.
+\section{Variance}
+\textbf{variance}\index{variance}$$Var(X) = E[(X-E[X])^2]$$
+
+
 \section{Bayes rule}
 \textbf{Joint probability}\index{Joint probability}, $P(A, B)=P(A\cap B)$ - это вероятность того, что произошло событие A и В одновременно. $P(A, B) = P(A|B)P(B)$, если события A и B независимы то $P(A|B)=P(A)$ следовательно получаем такую формулу: $P(A, B)=P(A)P(B)$. $P(A, B)=P(B,A)$, отсюда можно получить \textbf{Bayes Theorem}\index{Bayes Theorem}: $$P(A|B)P(B)=P(B|A)P(A)$$ $$P(A|B)=\frac{P(B|A)P(A)}{P(B)}$$
 \section{Prior probability and Posterior probability}
@@ -31,7 +39,10 @@ $$P(H|E)=\frac{P(E|H)P(H)}{P(H)P(E|H) + P(!H)P(E|!H)}$$$$P(H|E)=\frac{0.95*0.1}{
 
 \textbf{Conjugate prior} \index{Conjugate prior}
 In Bayesian probability theory, if the posterior distributions p(θ | x) are in the same probability distribution family as the prior probability distribution p(θ), the prior and posterior are then called conjugate distributions, and the prior is called a conjugate prior for the likelihood function.
-
+\section{Normal Distribution}
+\textbf{Normal Distribution}\index{Normal Distribution}
+ распределение вероятностей, которое в одномерном случае задаётся функцией плотности вероятности, совпадающей с функцией Гаусса
+ $$P(x)=\frac{1}{\sigma\sqrt{2\pi}}\exp^{-\frac{(x-E[x])^2}{2\sigma^2}}$$
 \section{Beta Distribution}
 \textbf{Beta Distribution}\index{Beta Distribution} is a family of continuous probability distributions defined on the interval [0, 1] parametrized by two positive shape parameters, denoted by α and β. In Bayesian inference, the beta distribution is the conjugate prior probability distribution for the Bernoulli, binomial, negative binomial and geometric distributions.$$P(x; \alpha, \beta)=\frac{x^{\alpha - 1}(1-x)^{\beta -1}}{B(\alpha,\beta)}$$The \textbf{beta function}\index{beta function}, 
 B, is a normalization constant to ensure that the total probability is 1. The beta function, also called the \textbf{Euler integral}\index{Euler integral} of the first kind. $$B(x, y)=\int_{0}^{1}t^{x-1}(1-t)^{y-1}$$
@@ -39,10 +50,38 @@ B, is a normalization constant to ensure that the total probability is 1. The be
 \textbf{Cauchy distribution} \index{Cauchy distribution} или (Распределение Коши). Случайная величина, имеющая распределение Коши, является стандартным примером величины, не имеющей математического ожидания и дисперсии.
 $$F_X(x)=\frac{1}{\pi}\arctan \left(\frac{x-x_0}{\gamma}\right) + \frac{1}{2}$$
 \section{Confidence intervals}
+\textbf{Confidence intervals}\index{Confidence intervals}
+There is a 95\% chance that p(x) is within $2\sigma_{\hat p}$ of $\hat p(x)$
 
-There is a 95\% chance that p is within $2\sigma_{\hat p}$ of $\hat p$
 
 \section{Hypothesis testing}
+
+\textbf{Null-Hypothesis}\index{Null-Hypothesis}, Нулевая гипотеза — принимаемое по умолчанию предположение о том, что не существует связи между двумя наблюдаемыми событиями, феноменами. Так, нулевая гипотеза считается верной до того момента, пока нельзя доказать обратное. \\
+
+\textbf{t-statistcs} \index{t-statistcs}:\\
+The T Statistic is used in a T test when you are deciding if you should support or reject the null hypothesis. It’s very similar to a Z-score and you use it in the same way: find a cut off point, find your t score, and compare the two. You use the t statistic when you have a small sample size, or if you don’t know the population standard deviation.
+
+\textbf{p-value} \index{p-value}:\\
+сначала устанавливаем significance level (threshold) - $\alpha$
+
+Например возьмем сэмпл и получим, что средннее значение = 25. 
+
+$$P(\mu_{sample} \geq 25 | H_0 == True)$$
+
+$$p-value < \alpha \Longrightarrow \text{reject} H_0 \text{accept} H_a$$
+$$p-value \geq \alpha \Longrightarrow \text{do not reject} H_0$$
+
+When you run a hypothesis test, you use the T statistic with a p value. The p-value tells you what the odds are that your results could have happened by chance. Let’s say you and a group of friends score an average of 205 on a bowling game. You know the average bowler scores 79.7. Should you and your friends consider professional bowling? Or are those scores a fluke? Finding the t statistic and the probability value will give you a good idea. More technically, finding those values will give you evidence of a significant difference between your team’s mean and the population mean (i.e. everyone).\\
+
+The greater the T, the more evidence you have that your team’s scores are significantly different from average. A smaller T value is evidence that your team’s score is not significantly different from average. It’s pretty obvious that your team’s score (205) is significantly different from 79.7, so you’d want to take a look at the probability value. If the p-value is larger than 5\%, the odds are your team getting those scores are due to chance. Very small (under 5\%), you’re onto something: think about going professional.\\
+
+The \textbf{Z-score} \index{Z-score} allows you to decide if your sample is different from the population mean. In order to use z, you must know four things:\\
+
+1) The population mean.
+2) The population standard deviation.
+3) The sample mean.
+4) The sample size.
+
 
 \chapter{Linear algebra}
 \section{Identity and Inverse Matrices}
@@ -75,6 +114,7 @@ diagonal are 1, while all of the other entries are zero.
 Обычная линейная модель:$ \hat y(x) = f_\theta = \sum_{i=1}^{n}x_i\theta_i + \theta_0$. В векторном (матричном если тренируем сразу на батче) виде: $\hat Y(X) = \mathbf{X}^T\theta$.\\При этом смещение (bias) $\theta_0$ поместим в общий вектор, $x_0=1$.Используем функцию ошибки \textbf{RSS}\index{RSS} (residaul sum of squares). Почти тоже самое, что и \textbf{MSE}\index{MSE} (Смотреть в разделе \autoref{loss:LS}).$$L=RSS=\sum_i^N{(y_i-\hat y_i)^2}$$Или в векторном виде (далее в этом разделе все будет в вектрном виде):$$L(\mathbf{X})=(\mathbf{Y}-\hat{\mathbf{Y}})^2=(\mathbf{Y}-\mathbf{X}^T\theta)^2$$Наша цель найти параметры $\theta$, для этого возьмем частную производную от функции ошибки L по $\theta$ и приравняем ее к нулю.$$\frac{\delta L}{\delta \theta}=\frac{1}{2}(\mathbf{Y} - \mathbf{X}^T\theta)\mathbf{X}=0$$Отсуда можно найти $\theta$:$$(\mathbf{Y} - \mathbf{X}^T\theta)\mathbf{X}=\mathbf{Y}^T\mathbf{X}-\mathbf{X}^T\mathbf{X}\theta = 0$$ $$\theta=(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{Y}^T\mathbf{X}$$Это прямой способ нахождения параметров, минусы заключаются в том, что для этого надо находить обратную матрицу $(\mathbf{X}^T\mathbf{X})^{-1}$, а она не всегда существует (плюс она должна быть квадратной, смотреть \autoref{Identity_and_Inverse_Matrices}). Такой способ называется решение на прямую или через \textbf{The Normal Equation}\index{The Normal Equation} Так же: размерность обратной матрицы $n\times n$ The computational complexity of inverting such a matrix is typically about $O(n^2.4)$ to $O(n^3)$ (depending on the implementation). On the positive side, this equation is linear with regards to the number of instances in the training set (it is
 O(m)), so it handles large training sets efficiently, provided they can fit in memory.
 Использование итерационного метода (\textbf{Gradient Descent}\index{Gradient Descent} или \textbf{Batch Gradient Descent}): Далее будет говорится о Batch Gradient Descent. Поэтому будем использовать \textbf{MSE}\index{MSE} в качетсве ошибки:$$L=MSE=\frac{1}{m}\sum_i^N{(y_i-\hat y_i)^2}$$где $m$-размер батча.$$\frac{\delta MSE}{\delta \theta_j}=\frac{1}{m}\sum_j^m(\mathbf{y}_j - \mathbf{x}_j^T\theta)\mathbf{x}_j$$В данном случае к нулю приравнивать не надо, наща цель найти градиент функции стоимости (или функции ошибки, в данном случае MSE).$$\nabla \theta = \frac{1}{m}(\mathbf{Y} - \mathbf{X}^T\theta)\mathbf{X}$$Отсюда получаем значения параметров на следующем шаге: $$\theta_{(next step)}=\theta-\eta\nabla\theta$$
+\textbf{r-squared} \index{r-squared} - насколько хорошо данные обьясняются моделью.
 \section{Logistic regression}
 \textbf{Logistic regression}\index{Logistic regression} предсказывает вероятность [0, 1]
 \chapter{Decision Tree}
@@ -231,9 +271,65 @@ The humble A/B test (also known as a randomised controlled trial, or RCT, in the
 
 Как правило, эти метрики применимы для интернет-магазинов: величина среднего чека, объем выручки, отнесенный на число посетителей интернет-магазина.\\
 
-Поведенческие факторы\\
+Поведенческие факторы\\9035389769
 
 К поведенческим факторам относят оценку заинтересованности посетителей в ресурсе. Ключевыми метриками являются: глубина просмотра страниц — число просмотренных страниц, отнесенное к числу посетителей на сайте, средняя продолжительность сессии, показатель отказов — доля пользователей, покинувших сайт сразу после первого захода, коэффициент удержания (можно считать, как 1 минус \% новых пользователей).\\
+
+\chapter{Time Series Analysis}
+
+\textbf{Time Series Components}\\
+A useful abstraction for selecting forecasting methods is to break a time series down into systematic and unsystematic components.\\
+
+\begin{itemize}
+\item \textbf{Systematic}: Components of the time series that have consistency or recurrence and can be described and modeled.
+\item \textbf{Non-Systematic}: Components of the time series that cannot be directly modeled.
+\end{itemize}
+
+A given time series is thought to consist of three systematic components including level, trend, seasonality, and one non-systematic component called noise.
+
+\begin{itemize}
+\item \textbf{Level}: The average value in the series.
+\item \textbf{Trend}: The increasing or decreasing value in the series.
+\item \textbf{Seasonality}: The repeating short-term cycle in the series.
+\item \textbf{Noise}: The random variation in the series.
+\end{itemize}
+
+When a time series is stationary, it can be easier to model. Statistical modeling methods assume or require the time series to be stationary.
+
+There are multiple tests that can be used to check stationarity.
+
+\begin{itemize}
+\item \textbf{ADF} \index{ADF}( Augmented Dicky Fuller Test)
+\item \textbf{KPSS} \index{KPSS}
+\item \textbf{PP} \index{PP}(Phillips-Perron test)
+\end{itemize}
+
+\textbf{KPSS} test:\\
+Null Hypothesis: the process is trend-stationary\\
+Alternative Hypothesis: the process has a unit root (this is how the authors of the test defined the alternative in their original 1992 paper)\\
+\textbf{ADF} test:\\
+Null Hypothesis: the process has a unit-root ("difference stationary")\\
+Alternative Hypothesis: the process has no unit root. It can mean either that the process is stationary, or trend stationary, depending on which version of the ADF test is used\\
+
+\textbf{A Random Walk} \index{A Random Walk} - временной ряд который выглядит как случайный\\
+
+In probability theory and statistics, a \textbf{unit root} \index{unit root} is a feature of some stochastic processes (such as random walks) that can cause problems in statistical inference involving time series models. A linear stochastic process has a unit root, if 1 is a root of the process's characteristic equation. Such a process is non-stationary but does not always have a trend.\\
+
+autocorrelation (\textbf{ACF}\index{ACF})\\
+partial autocorrelation (\textbf{PACF}\index{PACF}). The PACF is partial correlation between residuals, controlling for shorter lags.
+
+\section{AR, MA and ARIMA}
+
+\textbf{MA}\index{MA} - Next value in the series is a function of the average of the previous n number of values \textbf{AR}\index{AR} - The errors(difference in mean) of the next value is a function of the errors in the previous n number of values \textbf{ARMA}\index{ARMA} - a mixture of both.\\
+
+\textbf{MA(q)}  - moving average of q times back. $$X_t = Z_t + ... + \theta_{t-q}Z_{t-q}$$ where $Z_t$ - noise.
+
+
+\textbf{ARIMA} \index{ARIMA}\\
+difference transform - for remove trend.\\
+\textbf{log-return}\index{log-return} - log of diff.\\
+Akaike Information Criterion and Model Quality \textbf{AIC}\index{AIC}\\
+\textbf{Ljung-Box Q-statistic} \index{Ljung-Box Q-statistic} test Null hypotesis
 
 \chapter{Additional Info}
 \textbf{CHAID} - Chi-square automatic interaction detection\\
